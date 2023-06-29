@@ -1,6 +1,6 @@
 {
-  "editor.formatOnSave": true,
-  "rust-analyzer.check.command": "clippy",
-  "rust-analyzer.checkOnSave": true,
-  "rust-analyzer.check.extraArgs": ["--", "-D", "warnings"]
+  "editor.formatOnSave": true
+  // "rust-analyzer.check.command": "clippy",
+  // "rust-analyzer.checkOnSave": true,
+  // "rust-analyzer.check.extraArgs": ["--", "-D", "warnings"]
 }
