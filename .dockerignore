@@ -1,0 +1,10 @@
+.github/
+.git/
+.vscode/
+.idea/
+target/
+tests/
+scripts/
+migrations/
+.env
+Dockerfile
