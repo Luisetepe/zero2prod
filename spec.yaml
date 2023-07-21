@@ -36,3 +36,29 @@ services:
     # All incoming requests should be routed to our app
     routes:
       - path: /
+    envs:
+      - key: APP_DATABASE__USERNAME
+        scope: RUN_TIME
+        value: ${zero2prod.USERNAME}
+      - key: APP_DATABASE__PASSWORD
+        scope: RUN_TIME
+        value: ${zero2prod.PASSWORD}
+      - key: APP_DATABASE__HOST
+        scope: RUN_TIME
+        value: ${zero2prod.HOSTNAME}
+      - key: APP_DATABASE__PORT
+        scope: RUN_TIME
+        value: ${zero2prod.PORT}
+      - key: APP_DATABASE__DATABASE_NAME
+        scope: RUN_TIME
+        value: ${zero2prod.DATABASE}
+databases:
+  # PG = Postgres
+  - engine: PG
+    # Database name
+    name: zero2prod
+    # Again, let's keep the bill lean
+    num_nodes: 1
+    size: db-s-dev-database
+    # Postgres version - using the latest here
+    version: "15"

@@ -1,5 +1,4 @@
 use once_cell::sync::Lazy;
-use secrecy::ExposeSecret;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
 use std::net::TcpListener;
 use uuid::Uuid;
@@ -38,20 +37,18 @@ impl TestContext {
         config.database.database_name = Uuid::new_v4().to_string();
 
         // Create database
-        let mut connection = PgConnection::connect(
-            config
-                .database
-                .connection_string_without_db()
-                .expose_secret(),
-        )
-        .await
-        .expect("Failed to connect to Postgres");
+        let mut connection = PgConnection::connect_with(&config.database.without_db())
+            .await
+            .expect("Failed to connect to Postgres");
         connection
             .execute(format!(r#"CREATE DATABASE "{}";"#, config.database.database_name).as_str())
             .await
             .expect("Failed to create database.");
+        #[allow(clippy::let_underscore_future)]
+        let _ = connection.close().await;
+
         // Migrate database
-        let connection_pool = PgPool::connect(config.database.connection_string().expose_secret())
+        let connection_pool = PgPool::connect_with(config.database.with_db())
             .await
             .expect("Failed to connect to Postgres.");
         sqlx::migrate!("./migrations")
@@ -76,14 +73,9 @@ impl TestContext {
         self.db_pool.close().await;
 
         // Delete database
-        let mut connection = PgConnection::connect(
-            self.settings
-                .database
-                .connection_string_without_db()
-                .expose_secret(),
-        )
-        .await
-        .expect("Failed to connect to Postgres");
+        let mut connection = PgConnection::connect_with(&self.settings.database.without_db())
+            .await
+            .expect("Failed to connect to Postgres");
         connection
             .execute(
                 format!(
