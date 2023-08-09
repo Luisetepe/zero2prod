@@ -1,30 +1,37 @@
+use crate::domain::ValidEmail;
 use secrecy::{ExposeSecret, Secret};
-use serde_aux::field_attributes::deserialize_number_from_string;
-use sqlx::ConnectOptions;
 use sqlx::postgres::{PgConnectOptions, PgSslMode};
+use sqlx::ConnectOptions;
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 pub struct Settings {
     pub database: DatabaseSettings,
     pub application: ApplicationSettings,
+    pub email_client: EmailClientSettings,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
+pub struct EmailClientSettings {
+    pub base_url: String,
+    pub sender_email: String,
+    pub authorization_token: Secret<String>,
+    pub timeout_milliseconds: u64,
+}
+
+#[derive(serde::Deserialize, Clone)]
 pub struct ApplicationSettings {
-    #[serde(deserialize_with = "deserialize_number_from_string")]
     pub port: u16,
     pub host: String,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 pub struct DatabaseSettings {
-    #[serde(deserialize_with = "deserialize_number_from_string")]
     pub port: u16,
     pub username: String,
     pub password: Secret<String>,
     pub host: String,
     pub database_name: String,
-    pub require_ssl: bool
+    pub require_ssl: bool,
 }
 
 pub enum Environment {
@@ -51,6 +58,16 @@ impl TryFrom<String> for Environment {
                 other
             )),
         }
+    }
+}
+
+impl EmailClientSettings {
+    pub fn sender(&self) -> Result<ValidEmail, String> {
+        ValidEmail::parse(self.sender_email.clone())
+    }
+
+    pub fn timeout(&self) -> std::time::Duration {
+        std::time::Duration::from_millis(self.timeout_milliseconds)
     }
 }
 

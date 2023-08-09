@@ -34,6 +34,8 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 config = "0.13"
 uuid = { version = "1", features = ["v4"] }
 chrono = { version = "0.4.22", default-features = false, features = ["clock"] }
+unicode-segmentation = "1"
+validator = "0.16"
 
 [dependencies.sqlx]
 version = "0.6"
@@ -48,7 +50,19 @@ features = [
 "offline"
 ]
 
+[dependencies.reqwest]
+version = "0.11"
+default-features = false
+features = ["json", "rustls-tls"]
+
 # Dev dependencies are used exclusively when running tests or examples
 # They do not get included in the final application binary!
 [dev-dependencies]
-reqwest = "0.11"
+claims = "0.7"
+fake = "2.6"
+quickcheck = "1.0"
+quickcheck_macros = "1.0"
+rand = "0.8.5"
+wiremock = "0.5"
+serde_json = "1"
+tokio = { version = "1", features = ["rt", "macros"] }

@@ -1,5 +1,3 @@
-mod test_utils;
-
 use crate::test_utils::TestContext;
 
 #[tokio::test]

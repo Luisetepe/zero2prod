@@ -20,8 +20,8 @@ fi
 DB_USER=${POSTGRES_USER:=postgres}
 # Check if a custom password has been set, otherwise default to 'postgrespw'
 DB_PASSWORD="${POSTGRES_PASSWORD:=postgrespw}"
-# Check if a custom database name has been set, otherwise default to 'zero2prod'
-DB_NAME="${POSTGRES_DB:=zero2prod}"
+# Check if a custom database name has been set, otherwise default to 'newsletter'
+DB_NAME="${POSTGRES_DB:=newsletter}"
 # Check if a custom port has been set, otherwise default to '55000'
 DB_PORT="${POSTGRES_PORT:=55000}"
 # Check if a custom host has been set, otherwise default to 'localhost'

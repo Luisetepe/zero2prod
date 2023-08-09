@@ -39,26 +39,26 @@ services:
     envs:
       - key: APP_DATABASE__USERNAME
         scope: RUN_TIME
-        value: ${zero2prod.USERNAME}
+        value: ${newsletter.USERNAME}
       - key: APP_DATABASE__PASSWORD
         scope: RUN_TIME
-        value: ${zero2prod.PASSWORD}
+        value: ${newsletter.PASSWORD}
       - key: APP_DATABASE__HOST
         scope: RUN_TIME
-        value: ${zero2prod.HOSTNAME}
+        value: ${newsletter.HOSTNAME}
       - key: APP_DATABASE__PORT
         scope: RUN_TIME
-        value: ${zero2prod.PORT}
+        value: ${newsletter.PORT}
       - key: APP_DATABASE__DATABASE_NAME
         scope: RUN_TIME
-        value: ${zero2prod.DATABASE}
+        value: ${newsletter.DATABASE}
 databases:
   # PG = Postgres
   - engine: PG
     # Database name
-    name: zero2prod
+    name: newsletter
     # Again, let's keep the bill lean
     num_nodes: 1
     size: db-s-dev-database
     # Postgres version - using the latest here
-    version: "15"
+    version: "12"
